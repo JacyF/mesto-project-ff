@@ -1,3 +1,11 @@
+
+// Importing matrix cards.js
+import { initialCards} from "./scripts/cards.js";
+
+// index.js
+
+import './pages/index.css'; // добавьте импорт главного файла стилей
+
 // @todo: Темплейт карточки
 
 // Gettinng acess to template from HTML code
