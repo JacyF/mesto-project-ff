@@ -1,65 +1,67 @@
 
-// Importing matrix cards.js
-import { initialCards} from "./scripts/cards.js";
+// Importing index.js
+import './pages/index.css';
 
-// index.js
+//                          Importing from cards.js
 
-import './pages/index.css'; // добавьте импорт главного файла стилей
+import {initialCards} from "./scripts/cards.js";
+import {createCard} from './scripts/cards.js';
+import {deleteCard} from './scripts/cards.js';
 
-// @todo: Темплейт карточки
+//                          Importing from modal.js
+import {openModal} from './components/modal.js';
+import {closeModal} from './components/modal.js';
 
-// Gettinng acess to template from HTML code
-const cardTemplate = document.querySelector("#card-template").content;
+
+//                          Displaying Cards
 
 // @todo: DOM узлы
-
 // Getting acess to node where to add the new card
 const placesList = document.querySelector(".places__list");
 
-// @todo: Функция создания карточки
-
-function createCard(card, deleteCard) {
-
-    // Cloning template to get acess to his content
-    const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
-
-    //Getting acess to the img node
-    const cardImage = cardElement.querySelector(".card__image");
-
-    //adding content to img node
-    cardImage.src = card.link;
-    cardImage.alt = card.name;
-
-    // Getting acess to the title node
-    const cardTitle = cardElement.querySelector(".card__title");
-
-    // adding content to title
-    cardTitle.textContent = card.name;
-
-    // Getting acess to the button delete card
-    const cardDeleteButton = cardElement.querySelector(".card__delete-button");
-
-    // adding event to the button
-    cardDeleteButton.addEventListener("click", () => {
-
-        deleteCard(cardElement)
-    });
-
-    return cardElement;
-}
-
-// @todo: Функция удаления карточки
-
-function deleteCard(card) {
-
-    card.remove();
-}
-
 // @todo: Вывести карточки на страницу
-
 // looping through cards to display them
 initialCards.forEach(card => {
 
     // adding and displaying the cards
     placesList.append(createCard(card, deleteCard));
+})
+
+/*                                                    Project continuation                                                    */
+
+
+//                          Opening pop up window by "+" button 
+
+const profileAddButton = document.querySelector('.profile__add-button');
+profileAddButton.addEventListener('click', () => {
+
+    // getting acess to the button "+"
+    const popUpNewCard = document.querySelector('.popup_type_new-card')
+
+    openModal(popUpNewCard)
+});
+
+//                          Opening pop up window by edit buttonn
+
+const profileEditButton = document.querySelector(".profile__edit-button");
+profileEditButton.addEventListener("click", () => {
+
+    const popUpEdit = document.querySelector(".popup_type_edit");
+
+    openModal(popUpEdit);
+})
+
+//                          Opening pop up image click
+
+// getting all cards and looping through them
+document.querySelectorAll(".card__image").forEach(cardImage => {
+
+    // adding event click in each image
+    cardImage.addEventListener('click', () => {
+
+        const popUpImage = document.querySelector(".popup__image")
+        popUpImage.src = cardImage.src;
+        const popUpTypeImage = document.querySelector(".popup_type_image")
+        openModal(popUpTypeImage);
+    })
 })
