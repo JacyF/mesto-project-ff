@@ -37,7 +37,7 @@ export const initialCards = [
 
 /*                                                    Project continuation                                                    */
 
-//                      @todo: Function create cards
+//                      @todo: Function to create cards
 
 // Gettinng acess to template from HTML code
 const cardTemplate = document.querySelector("#card-template").content;
@@ -82,13 +82,13 @@ export function createCard(card, deleteCard, likeCard, zoomOutImage) {
   return cardElement;
 }
 
-//                      @todo: Function delete cards
+//                      @todo: Function to delete cards
 
 export function deleteCard(card) {
   card.remove();
 }
 
-//                      @todo: Function like cards
+//                      @todo: Function to like cards
 
 export function likeCard (like) {
   like.classList.toggle("card__like-button_is-active");

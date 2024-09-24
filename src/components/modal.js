@@ -1,5 +1,5 @@
 
-//                      @todo: Function open modal window
+//                      @todo: Function to open modal window
 
 export function openModal(popUp) {
 
@@ -9,7 +9,7 @@ export function openModal(popUp) {
     document.addEventListener('keydown', handleEscClose);
 }
 
-//                      @todo: Function close modal window
+//                      @todo: Function to close modal window
 
 export function closeModal(popUp) {
 
@@ -19,7 +19,7 @@ export function closeModal(popUp) {
     document.removeEventListener('keydown', handleEscClose);
 }
 
-//                      @todo: Function close modal window clicking 'Esc' button
+//                      @todo: Function to close modal window clicking 'Esc' button
 
 function handleEscClose(evt) {
 

@@ -21,7 +21,7 @@ const newCardTitle = formElementAddCard.querySelector(".popup__input_type_card-n
 const newCardUrl = formElementAddCard.querySelector(".popup__input_type_url");
 
 
-//                      @todo: Function Edit profile
+//                      @todo: Function to Edit profile
 
 export function handleEditProfileFormSubmit(evt) {
 
@@ -33,7 +33,7 @@ export function handleEditProfileFormSubmit(evt) {
     oldInputDesc.textContent = jobInput.value;
 }
 
-//                      @todo: Function Add card
+//                      @todo: Function to Add card
 
 export function handleAddCardFormSubmit(evt) {
     

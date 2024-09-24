@@ -37,7 +37,7 @@ const profileEditButton = document.querySelector(".profile__edit-button");
 const profileAddButton = document.querySelector('.profile__add-button');
 const popUpNewCard = document.querySelector('.popup_type_new-card');
 
-//                      @todo: Opening modal window by edit button
+//                      @todo: Opening modal window clicking "edit" button
 
 profileEditButton.addEventListener("click", () => {
 
