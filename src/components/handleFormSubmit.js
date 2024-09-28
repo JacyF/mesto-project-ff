@@ -2,23 +2,16 @@
 // Importing from index.js
 import { placesList } from "..";
 import { zoomOutImage } from "..";
+import { nameInput, jobInput } from "..";
+import { oldInputName, oldInputDesc } from "..";
+import { newCardTitle, newCardUrl } from "..";
+import {popUpTypeEdit, popUpNewCard} from "..";
 
-// Importing from cards.js
-import { createCard, deleteCard, likeCard} from "../scripts/cards";
+// Importing from modal.js
+import { closeModal } from "./modal";
 
-// Getting acess to Dom elements
-
-// Edit profile nodes
-const formElementEditProfile = document.querySelector('.popup__form[name = "edit-profile"]');
-export const nameInput = formElementEditProfile.querySelector(".popup__input_type_name");
-export const jobInput = formElementEditProfile.querySelector(".popup__input_type_description");
-export const oldInputDesc = document.querySelector(".profile__description");
-export const oldInputName =document.querySelector(".profile__title");
-
-// Add card nodes
-export const formElementAddCard = document.querySelector('.popup__form[name = "new-place"]');
-const newCardTitle = formElementAddCard.querySelector(".popup__input_type_card-name");
-const newCardUrl = formElementAddCard.querySelector(".popup__input_type_url");
+// Importing from card.js
+import { createCard, deleteCard, likeCard} from "../components/card";
 
 
 //                      @todo: Function to Edit profile
@@ -31,6 +24,9 @@ export function handleEditProfileFormSubmit(evt) {
     // Getting input values
     oldInputName.textContent = nameInput.value;
     oldInputDesc.textContent = jobInput.value;
+
+    // Closing popup
+    closeModal(popUpTypeEdit);
 }
 
 //                      @todo: Function to Add card
@@ -50,18 +46,6 @@ export function handleAddCardFormSubmit(evt) {
     // Adding new card to Dom
     placesList.prepend(createCard(newCards, deleteCard, likeCard, zoomOutImage));
 
-    // cleaning input fields
+    // Closing popup
+    closeModal(popUpNewCard);
 }
-
-// Give the function as callback
-formElementEditProfile.addEventListener('submit', handleEditProfileFormSubmit);
-formElementAddCard.addEventListener('submit', handleAddCardFormSubmit);
-
-
-
-
-
-
-  
-
-  

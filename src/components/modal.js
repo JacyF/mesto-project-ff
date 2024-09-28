@@ -24,29 +24,6 @@ export function closeModal(popUp) {
 function handleEscClose(evt) {
 
     if (evt.key === 'Escape') {
-        const openedPopup = document.querySelector('.popup_is-opened');
-        if (openedPopup) {
-            closeModal(openedPopup);
-        }
+        closeModal(document.querySelector('.popup_is-opened'));
     }
 }
-
-//                      @todo: Closing modal window clicking "overlay"
-
-document.addEventListener('click', (evt)=> {
-
-    if (evt.target.classList.contains('popup_is-opened')) {
-        closeModal(evt.target.closest(".popup_is-opened"))
-    }
-})
-
-//                      @todo: Closing modal window clicking "close" button
-
-document.querySelectorAll('.popup__close').forEach((button) => {
-    
-  button.addEventListener('click', () => {
-    const popup = button.closest('.popup');
-    closeModal(popup);
-  });
-});
-
