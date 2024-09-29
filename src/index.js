@@ -12,30 +12,26 @@ import { likeCard } from './components/card.js';
 import { openModal } from './components/modal.js';
 import { closeModal } from './components/modal.js';
 
-// Importing from components.js
-import { handleEditProfileFormSubmit } from './components/handleFormSubmit.js';
-import { handleAddCardFormSubmit } from './components/handleFormSubmit.js';
-
 // Getting acess to node where to add the new card
-export const placesList = document.querySelector(".places__list");
+const placesList = document.querySelector(".places__list");
 
 // Profile nodes
 const profileEditButton = document.querySelector(".profile__edit-button");
 const profileAddButton = document.querySelector('.profile__add-button');
-export const oldInputName = document.querySelector(".profile__title");
-export const oldInputDesc = document.querySelector(".profile__description");
+const oldInputName = document.querySelector(".profile__title");
+const oldInputDesc = document.querySelector(".profile__description");
 
 // Form submit buttons
 const formElementEditProfile = document.querySelector('.popup__form[name = "edit-profile"]');
 const formElementAddCard = document.querySelector('.popup__form[name = "new-place"]');
 
 // Profile edit form elements nodes
-export const nameInput = formElementEditProfile.querySelector(".popup__input_type_name");
-export const jobInput = formElementEditProfile.querySelector(".popup__input_type_description");
+const nameInput = formElementEditProfile.querySelector(".popup__input_type_name");
+const jobInput = formElementEditProfile.querySelector(".popup__input_type_description");
 
 // Profile add card form elements nodes
-export const newCardTitle = formElementAddCard.querySelector(".popup__input_type_card-name");
-export const newCardUrl = formElementAddCard.querySelector(".popup__input_type_url");
+const newCardTitle = formElementAddCard.querySelector(".popup__input_type_card-name");
+const newCardUrl = formElementAddCard.querySelector(".popup__input_type_url");
 
 // Image popups node
 const popUpTypeImage = document.querySelector(".popup_type_image");
@@ -43,11 +39,11 @@ const popUpImage = document.querySelector(".popup__image");
 const popUpTitle = document.querySelector(".popup__caption");
 
 // Open popup buttons
-export const popUpTypeEdit = document.querySelector(".popup_type_edit");
-export const popUpNewCard = document.querySelector('.popup_type_new-card');
+const popUpTypeEdit = document.querySelector(".popup_type_edit");
+const popUpNewCard = document.querySelector('.popup_type_new-card');
 
 // All popups
-export const allPopups = document.querySelectorAll(".popup");
+const allPopups = document.querySelectorAll(".popup");
 
 //                          Displaying Cards
 
@@ -57,9 +53,6 @@ initialCards.forEach(card => {
     // adding and displaying the cards
     placesList.append(createCard(card, deleteCard, likeCard, zoomOutImage));
 })
-
-
-/*                                                    Project continuation                                                    */
 
 
 //                      @todo: Opening modal window clicking "edit" button
@@ -82,13 +75,48 @@ profileAddButton.addEventListener('click', () => {
     formElementAddCard.reset();
 });
 
-// Sending form
+/*                      @todo: Sending form                       */
+
+// Function to Edit profile
+function handleEditProfileFormSubmit(evt) {
+
+    // Stoping auto refresh page
+    evt.preventDefault(); 
+
+    // Getting input values
+    oldInputName.textContent = nameInput.value;
+    oldInputDesc.textContent = jobInput.value;
+
+    // Closing popup
+    closeModal(popUpTypeEdit);
+}
+
+// Function to Add card
+function handleAddCardFormSubmit(evt) {
+    
+    // Stoping auto refresh page
+    evt.preventDefault();
+
+    // Getting input user values   
+    const newCardTitleValue = newCardTitle.value;
+    const newCardUrlValue = newCardUrl.value;
+
+    // New card object
+    const newCards = {name: newCardTitleValue, link: newCardUrlValue};
+
+    // Adding new card to Dom
+    placesList.prepend(createCard(newCards, deleteCard, likeCard, zoomOutImage));
+
+    // Closing popup
+    closeModal(popUpNewCard);
+}
+
 formElementEditProfile.addEventListener('submit', handleEditProfileFormSubmit);
 formElementAddCard.addEventListener('submit', handleAddCardFormSubmit);
 
 //                      @todo: Function to open modal window of card image
 
-export function zoomOutImage(image) {
+function zoomOutImage(image) {
 
     // Adding content to them
     popUpImage.src = image.link;
