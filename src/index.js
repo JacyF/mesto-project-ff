@@ -12,6 +12,10 @@ import { likeCard } from './components/card.js';
 import { openModal } from './components/modal.js';
 import { closeModal } from './components/modal.js';
 
+// Importing from validation.js
+import { enableValidation, clearValidation } from './components/validation.js';
+
+
 // Getting acess to node where to add the new card
 const placesList = document.querySelector(".places__list");
 
@@ -54,6 +58,18 @@ initialCards.forEach(card => {
     placesList.append(createCard(card, deleteCard, likeCard, zoomOutImage));
 })
 
+// Enable Validation data
+const validationConfig = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+};
+
+//Calling function validation
+enableValidation(validationConfig)
 
 //                      @todo: Opening modal window clicking "edit" button
 
@@ -63,6 +79,9 @@ profileEditButton.addEventListener("click", () => {
     jobInput.value = oldInputDesc.textContent;;
 
     openModal(popUpTypeEdit);
+
+    // Cleaning fields when reopen popup 
+    clearValidation(popUpTypeEdit, validationConfig);
 })
 
 //                      @todo: Opening modal window clicking "+" button
@@ -73,6 +92,9 @@ profileAddButton.addEventListener('click', () => {
 
     // cleaning form fields
     formElementAddCard.reset();
+
+    // Cleaning fields when reopen popup 
+    clearValidation(popUpNewCard, validationConfig);
 });
 
 /*                      @todo: Sending form                       */
