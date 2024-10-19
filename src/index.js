@@ -16,7 +16,7 @@ import { closeModal } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
 
 // Importing from api.js
-import { editUserAvatar } from './components/api.js';
+import { editUserAvatar, getUserEditInfo } from './components/api.js';
 
 
 // Getting acess to node where to add the new card
@@ -144,9 +144,15 @@ function handleEditProfileFormSubmit(evt) {
     // Stoping auto refresh page
     evt.preventDefault(); 
 
-    // Getting input values
-    oldInputName.textContent = nameInput.value;
-    oldInputDesc.textContent = jobInput.value;
+    // Calling data from server
+    getUserEditInfo(nameInput.value, jobInput.value)
+    .then(data => { 
+        oldInputName.textContent = data.name;
+        oldInputDesc.textContent = data.about;
+    })
+    .catch(error => { // displaying any error if occurs
+        console.log('There was some error, please verify //', error)
+    })
 
     // Closing popup
     closeModal(popUpTypeEdit);
