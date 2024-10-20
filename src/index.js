@@ -3,10 +3,9 @@
 import './pages/index.css';
 
 // Importing from card.js
-import { initialCards } from "./scripts/cards.js";
 import { createCard } from './components/card.js';
-import { deleteCard } from './components/card.js';
-import { likeCard } from './components/card.js';
+import { removeCard } from './components/card.js';
+import { like } from './components/card.js';
 
 // Importing from modal.js
 import { openModal } from './components/modal.js';
@@ -16,7 +15,15 @@ import { closeModal } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
 
 // Importing from api.js
-import { editUserAvatar, getUserEditInfo } from './components/api.js';
+import { editUserAvatar,
+    getUserInfo, 
+    updateUserInfo, 
+    getInitialCards, 
+    addCard, 
+    deleteCard, 
+    likeCard, 
+    unLikeCard 
+} from './components/api.js';
 
 
 // Getting acess to node where to add the new card
@@ -30,7 +37,7 @@ const oldInputName = document.querySelector(".profile__title");
 const oldInputDesc = document.querySelector(".profile__description");
 
 // Form submit buttons
-const formElementEditAvatar = document.querySelector('.popup__form[name="edit-avatar"]')
+const formElementEditAvatar = document.querySelector('.popup__form[name="edit-avatar"]');
 const formElementEditProfile = document.querySelector('.popup__form[name = "edit-profile"]');
 const formElementAddCard = document.querySelector('.popup__form[name = "new-place"]');
 
@@ -49,7 +56,7 @@ const popUpImage = document.querySelector(".popup__image");
 const popUpTitle = document.querySelector(".popup__caption");
 
 // Open popup buttons
-const popUpEditAvatar = document.querySelector('.popup_type_avatar')
+const popUpEditAvatar = document.querySelector('.popup_type_avatar');
 const popUpTypeEdit = document.querySelector(".popup_type_edit");
 const popUpNewCard = document.querySelector('.popup_type_new-card');
 
@@ -57,12 +64,36 @@ const popUpNewCard = document.querySelector('.popup_type_new-card');
 const allPopups = document.querySelectorAll(".popup");
 
 //                          Displaying Cards
+let profileId;
 
-// looping through cards to display them
-initialCards.forEach(card => {
+Promise.all([getUserInfo(), getInitialCards()]).then(([userInfo, cards]) => {
 
-    // adding and displaying the cards
-    placesList.append(createCard(card, deleteCard, likeCard, zoomOutImage));
+    // Getting user data
+    oldInputName.textContent = userInfo.name;
+    oldInputDesc.textContent = userInfo.about;
+    profileEditAvatarButton.style = `background-image: url(${userInfo.avatar})`;
+    profileId= userInfo._id;
+
+    // Cards and functionalities
+    cards.forEach(card => {
+        const cardContent = createCard(
+        card.name, 
+        card.link, 
+        deleteCard, 
+        zoomOutImage,
+        card.likes,
+        profileId,
+        card.owner._id,
+        card._id,
+        likeCard,
+        unLikeCard,
+        removeCard,
+        like   
+        )
+
+        // Appending  cards to DOM 
+        placesList.append(cardContent)
+    }) 
 })
 
 // Enable Validation data
@@ -145,7 +176,7 @@ function handleEditProfileFormSubmit(evt) {
     evt.preventDefault(); 
 
     // Calling data from server
-    getUserEditInfo(nameInput.value, jobInput.value)
+    updateUserInfo(nameInput.value, jobInput.value)
     .then(data => { 
         oldInputName.textContent = data.name;
         oldInputDesc.textContent = data.about;
@@ -164,16 +195,35 @@ function handleAddCardFormSubmit(evt) {
     // Stoping auto refresh page
     evt.preventDefault();
 
-    // Getting input user values   
-    const newCardTitleValue = newCardTitle.value;
-    const newCardUrlValue = newCardUrl.value;
+    // New Card Data 
+    const card = {
+        name: newCardTitle.value,
+        link: newCardUrl.value,
+    };
 
-    // New card object
-    const newCards = {name: newCardTitleValue, link: newCardUrlValue};
+    addCard(card.name, card.link)
+    .then ((data) => {
 
-    // Adding new card to Dom
-    placesList.prepend(createCard(newCards, deleteCard, likeCard, zoomOutImage));
-
+        const cardId = data._id;
+        placesList.prepend(createCard (
+          card.name,
+          card.link,
+          deleteCard,
+          zoomOutImage,
+          data.likes,
+          profileId,
+          data.owner._id,
+          cardId,
+          likeCard,
+          unLikeCard,
+          removeCard,
+          like
+        ));
+    })
+    .catch((error) => {
+        console.log('There was some error, please verify //', error);
+    })
+    
     // Closing popup
     closeModal(popUpNewCard);
 }
@@ -184,12 +234,12 @@ formElementAddCard.addEventListener('submit', handleAddCardFormSubmit);
 
 //                      @todo: Function to open modal window of card image
 
-function zoomOutImage(image) {
+function zoomOutImage(title, link) {
 
     // Adding content to them
-    popUpImage.src = image.link;
-    popUpImage.alt = image.name;
-    popUpTitle.textContent = image.name;
+    popUpImage.src = link;
+    popUpImage.alt = title;
+    popUpTitle.textContent = title;
 
     openModal(popUpTypeImage);
 }
